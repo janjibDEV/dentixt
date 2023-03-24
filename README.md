@@ -47,6 +47,9 @@ To learn more about stack used in this project, take a look at the following res
 - [MongoDB CRUD Documentation](https://www.mongodb.com/docs/manual/crud/) - learn CRUD operation using node.js and MongoDB
 - [Tailwindcss Documentation](https://tailwindcss.com/docs/installation) - learn tailwind css
 
+For more information about the project:
+Plase visit this link: [Project Figjam](https://www.figma.com/file/kJWd9g1U20H49BqWzC9mB1/dentixt?node-id=303%3A362&t=g54iSnNLcipHpx9M-1)
+
 ## Deployment
 
 This app is deployed on Vercel. Check out the app at [https://dentixt.vercel.app](https://dentixt.vercel.app)
