@@ -8,6 +8,7 @@ export default function Clinic() {
   // zip is postcode
   const { zip } = router.query;
   const [listClinics, setListClinics] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // get clinics in the area based on zipcode
@@ -15,12 +16,19 @@ export default function Clinic() {
       let res = await axios.get("../api/clinic", { params: { zip: zip } });
       setListClinics(res.data.data);
     };
+    setLoading(true);
     fetchdata(zip);
+    setLoading(false);
   }, []);
 
   return (
     <>
-      <p className="m-3">Results: {listClinics.length} found</p>
+      {loading ? (
+        <p>Loading</p>
+      ) : (
+        <p className="m-6">Results: {listClinics.length} found</p>
+      )}
+
       {listClinics &&
         listClinics.map((clinic) => (
           <ClinicCard
@@ -29,6 +37,8 @@ export default function Clinic() {
             name={clinic.name}
             phone={clinic.phone}
             address={clinic.address}
+            rating={clinic.rating}
+            price={clinic.price}
             zip={clinic.zip}
           />
         ))}

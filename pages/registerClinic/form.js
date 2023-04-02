@@ -1,104 +1,63 @@
-import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Star from "@/components/Star";
 import Alert from "@/components/Alert";
-function reservation() {
-  let router = useRouter();
-  // slug is the id of clinic selected
-  let { slug } = router.query;
-  const [startDate, setStartDate] = useState(new Date());
-  const [reserveInfo, setReserveInfo] = useState({
-    name: "",
-    age: 0,
-    email: "",
-    problem: "",
-    date: startDate,
-  });
-  const [selectedClinic, setSelectedClinic] = useState({
+
+function form() {
+  const router = useRouter();
+  const [clinicInfo, setClinicInfo] = useState({
     name: "",
     phone: "",
+    email: "",
     address: "",
-    rating: 0,
+    zip: "",
     price: 0,
+    rating: 0,
   });
   const [error, setError] = useState(false);
   const handleInputChange = (e) => {
     if (e.target.id == "name") {
-      setReserveInfo({ ...reserveInfo, name: e.target.value });
-    } else if (e.target.id == "age") {
-      setReserveInfo({ ...reserveInfo, age: e.target.value });
+      setClinicInfo({ ...clinicInfo, name: e.target.value });
+    } else if (e.target.id == "phone") {
+      setClinicInfo({ ...clinicInfo, phone: e.target.value });
     } else if (e.target.id == "email") {
-      setReserveInfo({ ...reserveInfo, email: e.target.value });
+      setClinicInfo({ ...clinicInfo, email: e.target.value });
+    } else if (e.target.id == "address") {
+      setClinicInfo({ ...clinicInfo, address: e.target.value });
+    } else if (e.target.id == "price") {
+      setClinicInfo({ ...clinicInfo, price: e.target.value });
     } else {
-      setReserveInfo({ ...reserveInfo, problem: e.target.value });
+      setClinicInfo({ ...clinicInfo, zip: e.target.value });
     }
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (
-      reserveInfo.name == "" ||
-      reserveInfo.age == 0 ||
-      reserveInfo.email == ""
+      clinicInfo.name == "" ||
+      clinicInfo.phone == "" ||
+      clinicInfo.zip == "" ||
+      clinicInfo.address == "" ||
+      clinicInfo.email == "" ||
+      clinicInfo.price == 0
     ) {
       setError(true);
     } else {
       // push reservations to database
       let res = await axios
-        .post("/api/server", {
-          ...reserveInfo,
-          date: startDate,
-          clinic: selectedClinic.name,
-          price: selectedClinic.price,
-        })
+        .post("/api/clinic", clinicInfo)
         // redirect user to receipt page
-        .then((result) => router.push(`/receipts/${result.data}`))
+        .then((result) => router.push("./successRegister"))
         .catch((err) => console.log(err));
     }
   };
-
-  useEffect(() => {
-    // get fata for selected clinic
-    const fetchdata = async (id) => {
-      let res = await axios.get("../api/getOneClinic", { params: { id: id } });
-      console.log(res.data.data);
-      setSelectedClinic(res.data.data);
-      //   console.log(res);
-    };
-    fetchdata(slug);
-  }, []);
-
   return (
     <>
       {error && <Alert />}
-      <span className="m-6">Selected Clinic: </span>
-      <div className="m-6 p-5 border h-2/6 border-gray-500 flex justify-between">
-        <div>
-          <h2 className="">{selectedClinic.name}</h2>
-          <p>{selectedClinic.phone}</p>
-          <p>{selectedClinic.address}</p>
-          <div className="flex my-2.5">
-            {Array(selectedClinic.rating)
-              .fill(1)
-              .map((el, i) => (
-                <Star key={i} />
-              ))}
-          </div>
-        </div>
-        <div>
-          <h2>Avg Price</h2>
-          <p className="text-3xl font-bold text-gray-900">
-            ${selectedClinic.price}
-          </p>
-        </div>
-      </div>
-
       <form className="m-10 p-10">
+        {/*  */}
         <h1 className="my-5 text-2xl">
-          Fill in the form below to confirm your reservations
+          Fill in the form below to register your clinic
         </h1>
         <div class="mb-6">
           <label
@@ -112,25 +71,25 @@ function reservation() {
             id="name"
             class="bg-white border text-sm rounded-lg block w-full p-2.5 dark:focus:border-gray-500 focus:outline-none"
             placeholder="Your name"
-            value={reserveInfo.name}
+            value={clinicInfo.name}
             onChange={(e) => handleInputChange(e)}
             required
           />
         </div>
-        <div class="grid md:grid-cols-2 md:gap-6">
+        <div className="grid md:grid-cols-2 md:gap-6">
           <div class="relative z-0 w-full mb-6 group">
             <label
               for="age"
               class="block mb-2 text-sm font-medium text-gray-900"
             >
-              Age
+              Phone
             </label>
             <input
-              type="number"
-              id="age"
+              type="text"
+              id="phone"
               class="bg-white border text-sm rounded-lg block w-full p-2.5 dark:focus:border-gray-500 focus:outline-none"
               required
-              value={reserveInfo.age}
+              value={clinicInfo.phone}
               onChange={(e) => handleInputChange(e)}
             />
           </div>
@@ -146,7 +105,7 @@ function reservation() {
               id="email"
               class="bg-white border text-sm rounded-lg block w-full p-2.5 dark:focus:border-gray-500 focus:outline-none"
               required
-              value={reserveInfo.email}
+              value={clinicInfo.email}
               onChange={(e) => handleInputChange(e)}
             />
           </div>
@@ -156,26 +115,51 @@ function reservation() {
             for="name"
             class="block mb-2 text-sm font-medium text-gray-900 "
           >
-            Describe your dental problem
+            Address
           </label>
           <textarea
-            id="message"
+            id="address"
             rows="4"
             class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border dark:focus:border-gray-500 focus:outline-none"
-            placeholder="Write your problem here..."
-            value={reserveInfo.problem}
+            placeholder="Address"
+            value={clinicInfo.address}
             onChange={(e) => handleInputChange(e)}
           ></textarea>
         </div>
-        <div>
-          <label>Pick a date:</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            className="block p-2.5 w-1/2 text-sm text-gray-900 bg-white rounded-lg border dark:focus:border-gray-500 focus:outline-none"
-          />
+        <div className="grid md:grid-cols-2 md:gap-6">
+          <div class="relative z-0 w-full mb-6 group">
+            <label
+              for="age"
+              class="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Zipcode
+            </label>
+            <input
+              type="number"
+              id="zipcode"
+              class="bg-white border text-sm rounded-lg block w-full p-2.5 dark:focus:border-gray-500 focus:outline-none"
+              required
+              value={clinicInfo.zip}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </div>
+          <div class="relative z-0 w-full mb-6 group">
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              class="bg-white border text-sm rounded-lg block w-full p-2.5 dark:focus:border-gray-500 focus:outline-none"
+              required
+              value={clinicInfo.price}
+              onChange={(e) => handleInputChange(e)}
+            />
+          </div>
         </div>
-
         <div class="flex items-start my-6">
           <div class="flex items-center h-5">
             <input
@@ -206,4 +190,4 @@ function reservation() {
   );
 }
 
-export default reservation;
+export default form;
