@@ -171,12 +171,6 @@ function form() {
               required
             />
           </div>
-          <label
-            for="remember"
-            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
-            Remember me
-          </label>
         </div>
         <button
           type="submit"
