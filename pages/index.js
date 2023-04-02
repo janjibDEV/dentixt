@@ -60,7 +60,7 @@ export default function Home() {
           </div>
 
           <section
-            className="m-10 h-screen flex flex-col justify-center items-center"
+            className="m-10  flex flex-col justify-center items-center"
             id="about"
           >
             <About />
