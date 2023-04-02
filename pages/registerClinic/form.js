@@ -13,6 +13,7 @@ function form() {
     zip: "",
     price: 0,
     rating: 0,
+    review: [],
   });
   const [error, setError] = useState(false);
   const handleInputChange = (e) => {

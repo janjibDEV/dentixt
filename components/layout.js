@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Roboto } from "next/font/google";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Footer from "./Footer";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -32,6 +33,7 @@ export default function Layout({ children }) {
         </div>
       </nav>
       <main>{children}</main>
+      <Footer />
     </>
   );
 }

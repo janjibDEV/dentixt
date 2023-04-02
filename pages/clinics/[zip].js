@@ -23,13 +23,19 @@ export default function Clinic() {
 
   return (
     <>
+      <button
+        className={`border m-6 p-2.5 rounded-full border-gray-300 dark:focus:border-gray-500 focus:outline-none hover:border-gray-500`}
+        onClick={() => router.back()}
+      >
+        Back
+      </button>
       {loading ? (
         <p>Loading</p>
       ) : (
         <p className="m-6">Results: {listClinics.length} found</p>
       )}
 
-      {listClinics &&
+      {listClinics ? (
         listClinics.map((clinic) => (
           <ClinicCard
             key={clinic._id}
@@ -40,8 +46,12 @@ export default function Clinic() {
             rating={clinic.rating}
             price={clinic.price}
             zip={clinic.zip}
+            review={clinic.review}
           />
-        ))}
+        ))
+      ) : (
+        <h1>This might take a while</h1>
+      )}
     </>
   );
 }

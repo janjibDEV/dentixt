@@ -74,7 +74,13 @@ function reservation() {
   return (
     <>
       {error && <Alert />}
-      <span className="m-6">Selected Clinic: </span>
+      <button
+        className={`border m-6 p-5 rounded-full border-gray-300 dark:focus:border-gray-500 focus:outline-none hover:border-gray-500`}
+        onClick={() => router.back()}
+      >
+        Back
+      </button>
+      <p className="m-6">Selected Clinic: </p>
       <div className="m-6 p-5 border h-2/6 border-gray-500 flex justify-between">
         <div>
           <h2 className="">{selectedClinic.name}</h2>

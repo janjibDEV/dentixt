@@ -9,7 +9,10 @@ export default async function handler(req, res) {
     let result = [];
     if (req.method == "GET") {
       // find clinic based on zipcode
-      const cursor = db.collection("clinics").find({ zip: req.query.zip });
+      const cursor = db
+        .collection("clinics")
+        .find({ zip: req.query.zip })
+        .sort({ price: 1 });
       await cursor.forEach((item) => result.push(item));
       res.status(200).send({ status: "ok", data: result });
     } else {

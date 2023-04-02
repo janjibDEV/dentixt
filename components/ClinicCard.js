@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Star from "./Star";
+import Unstar from "./Unstar";
 
-function ClinicCard({ id, name, phone, address, rating, price }) {
+function ClinicCard({ id, name, phone, address, rating, price, review }) {
   const router = useRouter();
+  const [seeReview, setSeeReview] = useState(false);
   return (
-    <div className="m-6 p-5 border h-2/6 border-gray-500 flex justify-between">
+    <div className="m-6 p-5 border h-2/6 shadow border-gray-500 flex justify-between">
       <div>
         <h2 className="">{name}</h2>
         <p>{phone}</p>
@@ -17,6 +19,11 @@ function ClinicCard({ id, name, phone, address, rating, price }) {
             .map((el, i) => (
               <Star key={i} />
             ))}
+          {Array(5 - rating)
+            .fill(1)
+            .map((el, i) => (
+              <Unstar key={i} />
+            ))}
         </div>
 
         <button
@@ -25,9 +32,15 @@ function ClinicCard({ id, name, phone, address, rating, price }) {
         >
           Reserve
         </button>
+        <div>
+          <button onClick={() => setSeeReview(!seeReview)}>
+            {seeReview ? "Close review <" : "See Review >"}
+          </button>
+          {review && seeReview && <p className="m-5">"{review}"</p>}
+        </div>
       </div>
       <div>
-        <h2>Avg Price</h2>
+        <h2>Average Price</h2>
         <p className="text-3xl font-bold text-gray-900">${price}</p>
       </div>
     </div>
