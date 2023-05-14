@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Roboto } from "next/font/google";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Footer from "./Footer";
+
+import { Sidebar } from "flowbite-react";
 
 const font = Roboto({ subsets: ["latin"], weight: "400" });
 
@@ -16,24 +17,26 @@ export default function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/teeth.png" />
       </Head>
-      <nav className="w-full p-6 flex flex-row space-between">
-        <div className="basis-1/2">
-          <Link href="/" className="text-xl">
-            dentixt
-          </Link>
-        </div>
-        <div className="basis-1/2 flex flex-row justify-end">
-          {" "}
-          <button
-            className="border p-2 rounded-full border-gray-300 dark:focus:border-gray-500 focus:outline-none hover:border-gray-500"
-            onClick={() => router.push("../registerClinic/form")}
-          >
-            Register your clinic
-          </button>
-        </div>
-      </nav>
-      <main>{children}</main>
-      <Footer />
+      
+      
+      <main className="flex">
+          <Sidebar className="p-3 ">
+            <Sidebar.Items>
+              <Sidebar.ItemGroup>
+                <Sidebar.Item onClick={() => router.push("/")}>
+                  Dashboard
+                </Sidebar.Item>
+                <Sidebar.Item onClick={() => router.push("../registerClinic/form")}>
+                  Register Clinic
+                </Sidebar.Item>
+                <Sidebar.Item onClick={() => router.push("../chatbot/doctorGPT")}>
+                  Dentist Bot 
+                </Sidebar.Item>
+              </Sidebar.ItemGroup>
+            </Sidebar.Items>
+          </Sidebar>
+        <div className="w-full">{children}</div></main>
+      {/* <Footer /> */}
     </>
   );
 }

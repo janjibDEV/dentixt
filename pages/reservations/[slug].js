@@ -81,7 +81,7 @@ function reservation() {
         Back
       </button>
       <p className="m-6">Selected Clinic: </p>
-      <div className="m-6 p-5 border h-2/6 border-gray-500 flex justify-between">
+      <div className="m-6 p-5 border h-1/7 border-gray-500 flex justify-between">
         <div>
           <h2 className="">{selectedClinic.name}</h2>
           <p>{selectedClinic.phone}</p>

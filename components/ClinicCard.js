@@ -7,8 +7,12 @@ import Unstar from "./Unstar";
 function ClinicCard({ id, name, phone, address, rating, price, review }) {
   const router = useRouter();
   const [seeReview, setSeeReview] = useState(false);
+  const tempClick = () => {
+    console.log(review)
+    setSeeReview(!seeReview)
+  }
   return (
-    <div className="m-6 p-5 border h-2/6 shadow border-gray-500 flex justify-between">
+    <div className="m-6 p-5 border h-auto shadow border-gray-500 flex justify-between">
       <div>
         <h2 className="">{name}</h2>
         <p>{phone}</p>
@@ -33,10 +37,16 @@ function ClinicCard({ id, name, phone, address, rating, price, review }) {
           Reserve
         </button>
         <div>
-          <button onClick={() => setSeeReview(!seeReview)}>
+          <button onClick={tempClick}>
+          {/* <button onClick={() => setSeeReview(!seeReview)}> */}
             {seeReview ? "Close review <" : "See Review >"}
           </button>
-          {review && seeReview && <p className="m-5">"{review}"</p>}
+          {/* {review && seeReview && <p className="m-5">"{review}"</p>} */}
+          <div className="flex items-center ">
+          {(review && seeReview) && review.map((e)=>{
+            return <p className="border p-3 m-2 shadow border-gray-500">{e}</p>
+          })}
+          </div>
         </div>
       </div>
       <div>
